@@ -9,6 +9,8 @@ on:
 env:
   AZURE_WEBAPP_NAME: 'dotnetcoresample-1' 
   AZURE_WEBAPP_PACKAGE_PATH: .
+  PATH_TO_SOLUTION: MySampleWebApp/MySampleWebApp.sln
+  PATH_TO_PROJ: MySampleWebAppTests1/MySampleWebAppTests1.csproj
 
 
 jobs:
@@ -25,13 +27,13 @@ jobs:
         include-prerelease: true
 
     - name: Build with dotnet
-      run: dotnet build MySampleWebApp/MySampleWebApp.sln --configuration Release
+      run: dotnet build ${{ env.PATH_TO_SOLUTION }} --configuration Release
 
     - name: Test
-      run: dotnet test MySampleWebAppTests1/MySampleWebAppTests1.csproj  /p:CollectCoverage=true /p:CoverletOutput=TestResults/ /p:CoverletOutputFormat=lcov
+      run: dotnet test ${{ env.PATH_TO_PROJ }}  /p:CollectCoverage=true /p:CoverletOutput=TestResults/ /p:CoverletOutputFormat=lcov
     
     - name: dotnet publish
-      run: dotnet publish MySampleWebApp/MySampleWebApp.sln -c Release -o ${{env.DOTNET_ROOT}}/myapp
+      run: dotnet publish ${{ env.PATH_TO_SOLUTION }} -c Release -o ${{env.DOTNET_ROOT}}/myapp
 
     - name: Upload artifact for deployment job
       uses: actions/upload-artifact@v2
