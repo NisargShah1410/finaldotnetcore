@@ -38,6 +38,11 @@ jobs:
        path: .\.sonar\scanner
        key: ${{ runner.os }}-sonar-scanner
        restore-keys: ${{ runner.os }}-sonar-scanner
+    - name: Install SonarQube scanner
+      if: steps.cache-sonar-scanner.outputs.cache-hit != 'true'
+      run: |
+        dotnet tool install --global dotnet-sonarscanner
+        dotnet sonarscanner begin /o:someorg /k:somekey /d:sonar.login=${{ secrets.SONAR_TOKEN }} /s:$GITHUB_WORKSPACE/SonarQube.Analysis.xml
 
     - name: Build with dotnet
       run: dotnet build ${{ env.PATH_TO_SOLUTION }} --configuration Release
@@ -45,6 +50,11 @@ jobs:
     - name: Test
       run: dotnet test ${{ env.PATH_TO_PROJ }}  /p:CollectCoverage=true /p:CoverletOutput=TestResults/ /p:CoverletOutputFormat=lcov
     
+    - name: Sonarqube end
+      run: dotnet sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          
     - name: dotnet publish
       run: dotnet publish ${{ env.PATH_TO_SOLUTION }} -c Release -o ${{env.DOTNET_ROOT}}/myapp
 
