@@ -2,7 +2,7 @@ name: Build
 on:
   push:
     branches:
-      - main # or the name of your main branch
+      - master # or the name of your main branch
 
 jobs:
   build:
@@ -33,7 +33,7 @@ jobs:
         if: steps.cache-sonar-scanner.outputs.cache-hit != 'true'
         shell: powershell
         run: |
-          dotnet sonar-scanner
+          New-Item -Path .\.sonar\scanner -ItemType Directory
           dotnet tool update dotnet-sonarscanner --tool-path .\.sonar\scanner
       - name: Build and analyze
         env:
@@ -41,5 +41,5 @@ jobs:
         shell: powershell
         run: |
           .\.sonar\scanner\dotnet-sonarscanner begin /k:"dotnetdemo" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="${{ secrets.SONAR_HOST_URL }}"
-          dotnet build MySampleWebApp/MySampleWebApp.sln --configuration Release
+          dotnet build MySampleWebApp/MySampleWebApp.sln
           .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
