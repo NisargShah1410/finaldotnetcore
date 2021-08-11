@@ -25,24 +25,6 @@ jobs:
       with:
         dotnet-version: '3.1.301'
         include-prerelease: true
-    - name: Cache SonarQube packages
-      uses: actions/cache@v1
-      with:
-        path: ~\sonar\cache
-        key: ${{ runner.os }}-sonar
-        restore-keys: ${{ runner.os }}-sonar
-    - name: Cache SonarQube scanner
-      id: cache-sonar-scanner
-      uses: actions/cache@v1
-      with:
-       path: .\.sonar\scanner
-       key: ${{ runner.os }}-sonar-scanner
-       restore-keys: ${{ runner.os }}-sonar-scanner
-    - name: Install SonarQube scanner
-      if: steps.cache-sonar-scanner.outputs.cache-hit != 'true'
-      run: |
-        dotnet tool install --global dotnet-sonarscanner
-        dotnet sonarscanner begin /k:"dotnetdemo" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="${{ secrets.SONAR_HOST_URL }}" /s:$GITHUB_WORKSPACE/SonarQube.Analysis.xml
 
     - name: Build with dotnet
       run: dotnet build ${{ env.PATH_TO_SOLUTION }} --configuration Release
@@ -50,11 +32,6 @@ jobs:
     - name: Test
       run: dotnet test ${{ env.PATH_TO_PROJ }}  /p:CollectCoverage=true /p:CoverletOutput=TestResults/ /p:CoverletOutputFormat=lcov
     
-    - name: Sonarqube end
-      run: dotnet sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          
     - name: dotnet publish
       run: dotnet publish ${{ env.PATH_TO_SOLUTION }} -c Release -o ${{env.DOTNET_ROOT}}/myapp
 
