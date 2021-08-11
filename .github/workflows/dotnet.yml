@@ -25,7 +25,6 @@ jobs:
       with:
         dotnet-version: '3.1.301'
         include-prerelease: true
-        
     - name: Cache SonarQube packages
       uses: actions/cache@v1
       with:
@@ -36,20 +35,12 @@ jobs:
       id: cache-sonar-scanner
       uses: actions/cache@v1
       with:
-        path: .\.sonar\scanner
-        key: ${{ runner.os }}-sonar-scanner
-        restore-keys: ${{ runner.os }}-sonar-scanner
-    - name: Install SonarQube scanner
-      if: steps.cache-sonar-scanner.outputs.cache-hit != 'true'
-      run: |
-          New-Item -Path .\.sonar\scanner -ItemType Directory
-          dotnet tool update dotnet-sonarscanner --tool-path .\.sonar\scanner
+       path: .\.sonar\scanner
+       key: ${{ runner.os }}-sonar-scanner
+       restore-keys: ${{ runner.os }}-sonar-scanner
 
     - name: Build with dotnet
-      run: |
-        .\.sonar\scanner\dotnet-sonarscanner begin /k:"dotnetdemo" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="${{ secrets.SONAR_HOST_URL }}"
-        dotnet build ${{ env.PATH_TO_SOLUTION }} --configuration Release
-        .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
+      run: dotnet build ${{ env.PATH_TO_SOLUTION }} --configuration Release
 
     - name: Test
       run: dotnet test ${{ env.PATH_TO_PROJ }}  /p:CollectCoverage=true /p:CoverletOutput=TestResults/ /p:CoverletOutputFormat=lcov
