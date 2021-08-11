@@ -27,10 +27,15 @@ jobs:
         include-prerelease: true
 
     - name: Build with dotnet
-      run: dotnet build ${{ env.PATH_TO_SOLUTION }} --configuration Release
+      run: |
+        dotnet tool install --global dotnet-sonarscanner
+        dotnet sonarscanner begin /k:"dotnetdemo" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="${{ secrets.SONAR_HOST_URL }}"
+        dotnet build ${{ env.PATH_TO_SOLUTION }} --configuration Release
 
     - name: Test
-      run: dotnet test ${{ env.PATH_TO_PROJ }}  /p:CollectCoverage=true /p:CoverletOutput=TestResults/ /p:CoverletOutputFormat=lcov
+      run: | 
+        dotnet test ${{ env.PATH_TO_PROJ }}  /p:CollectCoverage=true /p:CoverletOutput=TestResults/ /p:CoverletOutputFormat=lcov
+        dotnet sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
     
     - name: dotnet publish
       run: dotnet publish ${{ env.PATH_TO_SOLUTION }} -c Release -o ${{env.DOTNET_ROOT}}/myapp
