@@ -27,6 +27,7 @@
   <Property Name="sonar.jdbc.url">jdbc:jtds:sqlserver://mySqlServer/sonar;instance=SQLEXPRESS;SelectMethod=Cursor</Property>
   <Property Name="sonar.jdbc.username">sonar</Property>
   <Property Name="sonar.jdbc.password">sonar</Property>
- 
+  <Property Name="sonar.cs.vstest.reportsPaths">**/*.trx</Property>
+  <Property Name="sonar.cs.opencover.reportsPaths">**/coverage.opencover.xml</Property>
 
 </SonarQubeAnalysisProperties>
