@@ -4,8 +4,10 @@
 
   
   <Property Name="sonar.host.url">http://40.112.56.85:8080</Property>
-
-  <Property Name="sonar.login">39bfaf3dc115ac9601f5b9e35be3ecdbce886a9b</Property>
+  
+  <Property Name="sonar.login">admin</Property>
+  <Property Name="sonar.password">Tcs@12345678</Property>
+  <-- <Property Name="sonar.login">39bfaf3dc115ac9601f5b9e35be3ecdbce886a9b</Property> -->
   <-- <Property Name="sonar.password"></Property> -->
   
   <Property Name="sonar.jdbc.url">jdbc:mysql://http://40.112.56.85:8080/sonar?useUnicode=true</Property> 
