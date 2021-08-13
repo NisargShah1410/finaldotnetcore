@@ -1,64 +1,77 @@
-# Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
-# More GitHub Actions for Azure: https://github.com/Azure/actions
+# Docs for the Azure Web Apps Deploy action httpsgithub.comAzurewebapps-deploy
+# More GitHub Actions for Azure httpsgithub.comAzureactions
 
-name: .Net Core App
-on:
-  push:
-    branches:
+name .Net Core App
+on
+  push
+    branches
       - main
-env:
-  AZURE_WEBAPP_NAME: 'dotnetcoresample-1' 
-  AZURE_WEBAPP_PACKAGE_PATH: .
-  PATH_TO_SOLUTION: MySampleWebApp/MySampleWebApp.sln
-  PATH_TO_PROJ: MySampleWebAppTests1/MySampleWebAppTests1.csproj
+env
+  AZURE_WEBAPP_NAME 'dotnetcoresample-1' 
+  AZURE_WEBAPP_PACKAGE_PATH .
+  PATH_TO_SOLUTION MySampleWebAppMySampleWebApp.sln
+  PATH_TO_PROJ MySampleWebAppTests1MySampleWebAppTests1.csproj
 
 
-jobs:
-  build:
-    runs-on: ubuntu-latest
+jobs
+  build
+    runs-on ubuntu-latest
 
-    steps:
-    - uses: actions/checkout@v2
+    steps
+    - uses actionscheckout@v2
+      with
+          # Disabling shallow clone is recommended for improving relevancy of sonarqube reporting
+          fetch-depth 0
 
-    - name: Set up .NET Core
-      uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: '3.1.301'
-        include-prerelease: true
+    - name Set up .NET Core
+      uses actionssetup-dotnet@v1
+      with
+        dotnet-version '3.1.301'
+        include-prerelease true
+        
+    - name Sonarqube Begin
+      run  
+        dotnet tool install --global dotnet-sonarscanner
+        dotnet sonarscanner begin dsonar.host.url=http52.191.30.178080 oNisargShah1410 kNisargShah1410_finaldotnetcore dsonar.login=${{ secrets.SONAR_TOKEN }}
 
-    - name: Build with dotnet
-      run: dotnet build ${{ env.PATH_TO_SOLUTION }} --configuration Release
+    - name Build with dotnet
+      run dotnet build ${{ env.PATH_TO_SOLUTION }} --configuration Release
 
-    - name: Test
-      run: dotnet test ${{ env.PATH_TO_PROJ }}  /p:CollectCoverage=true /p:CoverletOutput=TestResults/ /p:CoverletOutputFormat=lcov
+    - name Test
+      run dotnet test ${{ env.PATH_TO_PROJ }}  --settings coverlet.runsettings --loggertrx
     
-    - name: dotnet publish
-      run: dotnet publish ${{ env.PATH_TO_SOLUTION }} -c Release -o ${{env.DOTNET_ROOT}}/myapp
+    - name Sonarqube end
+      run dotnet sonarscanner end dsonar.login=${{ secrets.SONAR_TOKEN }}
+      env
+          GITHUB_TOKEN ${{ secrets.GITHUB_TOKEN }}
+    
+    - name dotnet publish
+      run dotnet publish ${{ env.PATH_TO_SOLUTION }} -c Release -o ${{env.DOTNET_ROOT}}myapp
 
-    - name: Upload artifact for deployment job
-      uses: actions/upload-artifact@v2
-      with:
-        name: .net-app
-        path: ${{env.DOTNET_ROOT}}/myapp
+    - name Upload artifact for deployment job
+      uses actionsupload-artifact@v2
+      with
+        name .net-app
+        path ${{env.DOTNET_ROOT}}myapp
 
-  deploy:
-    runs-on: ubuntu-latest
-    needs: build
-    environment:
-      name: 'production'
-      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+  deploy
+    runs-on ubuntu-latest
+    needs build
+    environment
+      name 'production'
+      url ${{ steps.deploy-to-webapp.outputs.webapp-url }}
 
-    steps:
-    - name: Download artifact from build job
-      uses: actions/download-artifact@v2
-      with:
-        name: .net-app
+    steps
+    - name Download artifact from build job
+      uses actionsdownload-artifact@v2
+      with
+        name .net-app
 
-    - name: Deploy to Azure Web App
-      id: deploy-to-webapp
-      uses: azure/webapps-deploy@v2
-      with:
-        app-name: ${{ env.AZURE_WEBAPP_NAME }}
-        slot-name: 'production'
-        publish-profile: ${{ secrets.DOTNET_WEB_APP }}
-        package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+    - name Deploy to Azure Web App
+      id deploy-to-webapp
+      uses azurewebapps-deploy@v2
+      with
+        app-name ${{ env.AZURE_WEBAPP_NAME }}
+        slot-name 'production'
+        publish-profile ${{ secrets.DOTNET_WEB_APP }}
+        package ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
