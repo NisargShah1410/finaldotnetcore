@@ -32,7 +32,7 @@ jobs:
     - name: Sonarqube Begin
       run: | 
         dotnet tool install --global dotnet-sonarscanner
-        dotnet sonarscanner begin /o:NisargShah1410 /k:NisargShah1410_finaldotnetcore /d:sonar.login=${{ secrets.SONAR_TOKEN }} /s:$GITHUB_WORKSPACE/SonarQube.Analysis.xml
+        dotnet sonarscanner begin /o:NisargShah1410 /k:NisargShah1410_finaldotnetcore /d:sonar.login=${{ secrets.SONAR_TOKEN }}
 
     - name: Build with dotnet
       run: dotnet build ${{ env.PATH_TO_SOLUTION }} --configuration Release
