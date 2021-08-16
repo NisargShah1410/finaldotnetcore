@@ -1,3 +1,18 @@
+ - name: Cache SonarQube packages
+        uses: actions/cache@v1
+        with:
+          path: ~\sonar\cache
+          key: ${{ runner.os }}-sonar
+          restore-keys: ${{ runner.os }}-sonar
+      - name: Cache SonarQube scanner
+        id: cache-sonar-scanner
+        uses: actions/cache@v1
+        with:
+          path: .\.sonar\scanner
+          key: ${{ runner.os }}-sonar-scanner
+          restore-keys: ${{ runner.os }}-sonar-scanner
+
+
 # Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
 # More GitHub Actions for Azure: https://github.com/Azure/actions
 
@@ -22,20 +37,6 @@ jobs:
       with:
           # Disabling shallow clone is recommended for improving relevancy of sonarqube reporting
           fetch-depth: 0
-    - name: Cache SonarQube packages
-      uses: actions/cache@v1
-      with:
-        path: ~\sonar\cache
-        key: ${{ runner.os }}-sonar
-        restore-keys: ${{ runner.os }}-sonar
-    - name: Cache SonarQube scanner
-      id: cache-sonar-scanner
-      uses: actions/cache@v1
-      with:
-        path: .\.sonar\scanner
-        key: ${{ runner.os }}-sonar-scanner
-        restore-keys: ${{ runner.os }}-sonar-scanner
-
 
     - name: Set up .NET Core
       uses: actions/setup-dotnet@v1
@@ -51,7 +52,7 @@ jobs:
       run: dotnet build ${{ env.PATH_TO_SOLUTION }} --configuration Release
 
     - name: Test
-      run: dotnet test ${{ env.PATH_TO_PROJ }}  --settings coverlet.runsettings --logger:trx    
+      run: dotnet test --settings coverlet.runsettings --logger:trx    
     - name: Sonarqube end
       run: dotnet sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
       env:
