@@ -22,6 +22,20 @@ jobs:
       with:
           # Disabling shallow clone is recommended for improving relevancy of sonarqube reporting
           fetch-depth: 0
+    - name: Cache SonarQube packages
+      uses: actions/cache@v1
+      with:
+        path: ~\sonar\cache
+        key: ${{ runner.os }}-sonar
+        restore-keys: ${{ runner.os }}-sonar
+    - name: Cache SonarQube scanner
+      id: cache-sonar-scanner
+      uses: actions/cache@v1
+      with:
+        path: .\.sonar\scanner
+        key: ${{ runner.os }}-sonar-scanner
+        restore-keys: ${{ runner.os }}-sonar-scanner
+
 
     - name: Set up .NET Core
       uses: actions/setup-dotnet@v1
