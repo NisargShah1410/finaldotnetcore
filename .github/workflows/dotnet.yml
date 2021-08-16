@@ -37,7 +37,7 @@ jobs:
       run: dotnet build ${{ env.PATH_TO_SOLUTION }} --configuration Release
 
     - name: Test
-      run: dotnet test --settings coverlet.runsettings --logger:trx    
+      run: dotnet test ${{ env.PATH_TO_SOLUTION }} --settings coverlet.runsettings --logger:trx    
     - name: Sonarqube end
       run: dotnet sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
       env:
