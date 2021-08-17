@@ -20,7 +20,6 @@ jobs:
     steps:
     - uses: actions/checkout@v2
       with:
-          # Disabling shallow clone is recommended for improving relevancy of sonarqube reporting
           fetch-depth: 0
 
     - name: Set up .NET Core
