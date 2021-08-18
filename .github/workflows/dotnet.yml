@@ -31,12 +31,13 @@ jobs:
     - name: Sonarqube Begin
       run: | 
         dotnet tool install --global dotnet-sonarscanner
-        dotnet sonarscanner begin /d:sonar.host.url=http://20.102.53.166:8080 /o:NisargShah1410 /k:NisargShah1410_finaldotnetcore /d:sonar.cs.vstest.reportsPaths=**/*.trx /d:sonar.cs.opencover.reportsPaths=**/coverage.opencover.xml /d:sonar.login=${{ secrets.SONAR_TOKEN }}
+        dotnet sonarscanner begin /d:sonar.host.url=http://20.102.53.166:8080 /o:NisargShah1410 /k:NisargShah1410_finaldotnetcore /d:sonar.cs.vstest.reportsPaths=**/*.lcov /d:sonar.cs.opencover.reportsPaths=**TestResults/coverage.info /d:sonar.login=${{ secrets.SONAR_TOKEN }}
     - name: Build with dotnet
       run: dotnet build ${{ env.PATH_TO_SOLUTION }} --configuration Release
 
     - name: Test
-      run: dotnet test ${{ env.PATH_TO_PROJ }}  --settings coverlet.runsettings --logger:trx    
+      run: dotnet test ${{ env.PATH_TO_PROJ }}  /p:CollectCoverage=true /p:CoverletOutput=TestResults/ /p:CoverletOutputFormat=lcov
+      #dotnet test ${{ env.PATH_TO_PROJ }}  --settings coverlet.runsettings --logger:trx    
       
     - name: Sonarqube end
       run: dotnet sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
