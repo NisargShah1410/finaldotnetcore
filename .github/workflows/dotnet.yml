@@ -21,6 +21,11 @@ jobs:
     - uses: actions/checkout@v2
       with:
           fetch-depth: 0
+          
+    - uses: microsoft/DevSkim-Action@v1
+    - uses: github/codeql-action/upload-sarif@v1
+      with:
+        sarif_file: devskim-results.sarif
 
     - name: Set up .NET Core
       uses: actions/setup-dotnet@v1
@@ -31,7 +36,7 @@ jobs:
     - name: Sonarqube Begin
       run: | 
         dotnet tool install --global dotnet-sonarscanner
-        dotnet sonarscanner begin /d:sonar.host.url=http://20.102.53.166:8080 /o:NisargShah1410 /k:NisargShah1410_finaldotnetcore /d:sonar.cs.vstest.reportsPaths=**/*.trx /d:sonar.cs.opencover.reportsPaths=**/coverage.opencover.xml /d:sonar.login=${{ secrets.SONAR_TOKEN }}
+        dotnet sonarscanner begin /d:sonar.host.url=http://40.76.199.133:8080 /o:NisargShah1410 /k:NisargShah1410_finaldotnetcore /d:sonar.cs.vstest.reportsPaths=**/*.trx /d:sonar.cs.opencover.reportsPaths=**/coverage.opencover.xml /d:sonar.login=${{ secrets.SONAR_TOKEN }}
     - name: Build with dotnet
       run: dotnet build ${{ env.PATH_TO_SOLUTION }} --configuration Release
 
