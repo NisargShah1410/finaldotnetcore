@@ -34,10 +34,10 @@ jobs:
       with:
         output-filename: devskim-results.sarif
     
-    #- name: Initialize CodeQL
-     # uses: github/codeql-action/init@v1
-      #with:
-       # languages: ${{ matrix.language }}
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@v1
+      with:
+        languages: ${{ matrix.language }}
         
     #- name: Autobuild
      # uses: github/codeql-action/autobuild@v1
