@@ -81,7 +81,7 @@ jobs:
     environment:
       name: finaldotnetcoreEnv.prod
       #name: 'production'
-      #url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
 
     steps:
     - name: Download artifact from build job
@@ -94,6 +94,6 @@ jobs:
       uses: azure/webapps-deploy@v2
       with:
         app-name: ${{ env.AZURE_WEBAPP_NAME }}
-        slot-name: 'production'
+        slot-name: finaldotnetcoreEnv.prod
         publish-profile: ${{ secrets.DOTNET_WEB_APP }}
         package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
