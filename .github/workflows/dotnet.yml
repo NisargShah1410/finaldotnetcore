@@ -1,115 +1,29 @@
-## Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
-# More GitHub Actions for Azure: https://github.com/Azure/actions
-
 name: .Net Core App
 on:
   push:
-    branches:
-      - main
+    branches: main
+  pull_request:
+    branches: main
+  workflow_dispatch: 
 env:
   AZURE_WEBAPP_NAME: 'dotnetcoresample-1' 
   AZURE_WEBAPP_PACKAGE_PATH: .
   PATH_TO_SOLUTION: MySampleWebApp/MySampleWebApp.sln
   PATH_TO_PROJ: MySampleWebAppTests1/MySampleWebAppTests1.csproj
-
-
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    permissions:
-      actions: read
-      contents: read
-      security-events: write
-    strategy:
-      fail-fast: false
-      matrix:
-        language: [ 'csharp']
-
-    steps:
-    - uses: actions/checkout@v2
-      with:
-          fetch-depth: 0
-          
-    - uses: microsoft/DevSkim-Action@v1
-    
-    - name: Initialize CodeQL
-      uses: github/codeql-action/init@v1
-      with:
-        languages: ${{ matrix.language }}
-        
-    - name: Autobuild
-      uses: github/codeql-action/autobuild@v1
-    
-    - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@v1
-
-    #- uses: github/codeql-action/upload-sarif@v1
-     # with:
-      #  sarif_file: devskim-results.sarif
-    
-    #- name: Perform CodeQL Analysis
-     # uses: github/codeql-action/analyze@v1
-
-    - name: Set up .NET Core
-      uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: 3.1.301
-        include-prerelease: false
-        
-    - name: Sonarqube Begin
-      run: | 
-        dotnet tool install --global dotnet-sonarscanner
-        dotnet sonarscanner begin /d:sonar.host.url=http://40.76.199.133:8080 /o:NisargShah1410 /k:NisargShah1410_finaldotnetcore /d:sonar.cs.vstest.reportsPaths=**/*.trx /d:sonar.cs.opencover.reportsPaths=**/coverage.opencover.xml /d:sonar.login=${{ secrets.SONAR_TOKEN }}
-    - name: Build with dotnet
-      run: dotnet build ${{ env.PATH_TO_SOLUTION }} --configuration Release
-
-    - name: Test
-      run:  |
-        dotnet test ${{ env.PATH_TO_PROJ }}  --settings coverlet.runsettings --logger:trx    
-        dotnet test ${{ env.PATH_TO_PROJ }}  /p:CollectCoverage=true /p:CoverletOutput=TestResults/ /p:CoverletOutputFormat=lcov
-        
-      
-    - name: Sonarqube end
-      run: dotnet sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
-      env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          
-    - name: SonarQube Quality Gate check
-      uses: sonarsource/sonarqube-quality-gate-action@master
-      with:
-        scanMetadataReportFile: .sonarqube/out/.sonar/report-task.txt
-      timeout-minutes: 5
-      env:
-       SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-    
-    - name: dotnet publish
-      run: dotnet publish ${{ env.PATH_TO_SOLUTION }} -c Release -o ${{env.DOTNET_ROOT}}/myapp
-
-    - name: Upload artifact for deployment job
-      uses: actions/upload-artifact@v2
-      with:
-        name: .net-app
-        path: ${{env.DOTNET_ROOT}}/myapp
-
   deploy:
     runs-on: ubuntu-latest
     needs: build
-    environment:
-      #name: finaldotnetcoreEnv.prod
-      name: 'production'
-      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
-
     steps:
     - name: Download artifact from build job
-      uses: actions/download-artifact@v2
-      with:
+    - uses: actions/download-artifact@v2
+    - with:
         name: .net-app
-
     - name: Deploy to Azure Web App
-      id: deploy-to-webapp
-      uses: azure/webapps-deploy@v2
-      with:
+    - id: deploy-to-webapp
+    - uses: azure/webapps-deploy@v2
+    - with:
         app-name: ${{ env.AZURE_WEBAPP_NAME }}
-        #slot-name: 'production'
         publish-profile: ${{ secrets.DOTNET_WEB_APP }}
         package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+...
