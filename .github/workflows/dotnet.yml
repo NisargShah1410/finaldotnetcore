@@ -34,7 +34,8 @@ jobs:
       with:
         output-filename: devskim-results.sarif
         output-directory: .
-    -run: devskim analyze ./devskim-results.sarif
+    - name : Devskim analyze
+      run: devskim analyze ./devskim-results.sarif
          
    # - name: Initialize CodeQL
     #  uses: github/codeql-action/init@v1
