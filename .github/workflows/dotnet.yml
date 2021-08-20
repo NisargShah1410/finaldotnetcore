@@ -31,9 +31,6 @@ jobs:
           fetch-depth: 0
           
     - uses: microsoft/DevSkim-Action@v1
-      with:
-        output-filename: devskim-results.sarif
-        output-directory: output
         
     #- name: Initialize CodeQL
       #uses: github/codeql-action/init@v1
@@ -53,7 +50,7 @@ jobs:
     - name: Download artifact from build job
       uses: actions/download-artifact@v2
       with:
-        name: output 
+        name: devskim-results.sarif 
     
     
     - name: Set up .NET Core
