@@ -45,10 +45,10 @@ jobs:
         include-prerelease: false
         
         
-    - name: Sonarqube Begin
-      run: | 
-        dotnet tool install --global dotnet-sonarscanner
-        dotnet sonarscanner begin /d:sonar.host.url=http://40.117.136.120:8080 /o:NisargShah1410 /k:NisargShah1410_finaldotnetcore /d:sonar.cs.vstest.reportsPaths=**/*.trx /d:sonar.cs.opencover.reportsPaths=**/coverage.opencover.xml /d:sonar.login=${{ secrets.SONAR_TOKEN }}
+    #- name: Sonarqube Begin
+     # run: | 
+      #  dotnet tool install --global dotnet-sonarscanner
+       # dotnet sonarscanner begin /d:sonar.host.url=http://40.117.136.120:8080 /o:NisargShah1410 /k:NisargShah1410_finaldotnetcore /d:sonar.cs.vstest.reportsPaths=**/*.trx /d:sonar.cs.opencover.reportsPaths=**/coverage.opencover.xml /d:sonar.login=${{ secrets.SONAR_TOKEN }}
     - name: Build with dotnet
       run: dotnet build ${{ env.PATH_TO_SOLUTION }} --configuration Release
 
@@ -58,18 +58,18 @@ jobs:
         dotnet test ${{ env.PATH_TO_PROJ }}  /p:CollectCoverage=true /p:CoverletOutput=TestResults/ /p:CoverletOutputFormat=lcov
         
       
-    - name: Sonarqube end
-      run: dotnet sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
-      env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    #- name: Sonarqube end
+     # run: dotnet sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
+      #env:
+       #   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           
-    - name: SonarQube Quality Gate check
-      uses: sonarsource/sonarqube-quality-gate-action@master
-      with:
-        scanMetadataReportFile: .sonarqube/out/.sonar/report-task.txt
-      timeout-minutes: 5
-      env:
-       SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+    #- name: SonarQube Quality Gate check
+     # uses: sonarsource/sonarqube-quality-gate-action@master
+      #with:
+       # scanMetadataReportFile: .sonarqube/out/.sonar/report-task.txt
+      #timeout-minutes: 5
+      #env:
+       #SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
     
     - name: dotnet publish
       run: dotnet publish ${{ env.PATH_TO_SOLUTION }} -c Release -o ${{env.DOTNET_ROOT}}/myapp
