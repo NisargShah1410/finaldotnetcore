@@ -7,7 +7,7 @@ namespace MySampleWebApp
 {
     public class Calculator
     {
-        public const string DefaultCertificatePssword = "C0mpl1c4t3d";
+        public const string DefaultCertificatePassword = "C0mpl1c4t3d";
         public string GetPassword()
         {
             return "ttt";
