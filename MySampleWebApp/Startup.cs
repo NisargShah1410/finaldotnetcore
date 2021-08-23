@@ -12,9 +12,16 @@ namespace MySampleWebApp
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+          string constring=  Configuration.GetConnectionString("DefaultConnection");
+            sampleMethod();
+        }
+        private void sampleMethod()
+        {
+            Calculator calc = new Calculator();
+            int result = calc.Add(3, 4);
         }
 
         public IConfiguration Configuration { get; }
