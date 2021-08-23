@@ -5,10 +5,6 @@ using System.Threading.Tasks;
 
 namespace MySampleWebApp
 {
-    public string GetPassword()
-    {
-            return "ttt";
-    }
     public class Calculator
     {
         public int Add(int a, int b)
