@@ -10,7 +10,7 @@ namespace MySampleWebApp
         public const string DefaultCertificatePassword = "C0mpl1c4t3d";
         public string GetPassword()
         {
-            return "ttt";
+            return DefaultCertificatePassword;
         }
         public int Add(int a, int b)
         {
