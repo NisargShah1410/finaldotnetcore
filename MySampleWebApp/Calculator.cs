@@ -7,6 +7,10 @@ namespace MySampleWebApp
 {
     public class Calculator
     {
+        public string GetPassword()
+        {
+            return "ttt";
+        }
         public int Add(int a, int b)
         {
             return a + b;
