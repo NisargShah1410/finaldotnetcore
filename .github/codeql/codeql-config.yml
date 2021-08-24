@@ -2,5 +2,5 @@ name: "Security and Quality"
 
 queries:
   - uses: security-and-quality
-  - uses: ./.github/codeql/csharp-code-scanning.qls
+  - uses: /.github/codeql/csharp-code-scanning.qls
 
