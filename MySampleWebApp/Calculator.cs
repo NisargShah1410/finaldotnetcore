@@ -10,6 +10,7 @@ namespace MySampleWebApp
         public const string DefaultCertificatePassword = "C0mpl1c4t3d";
         public string GetPassword()
         {   
+            string password ;
             password = DefaultCertificatePassword ;
             return password;
         }
