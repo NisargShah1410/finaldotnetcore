@@ -7,7 +7,8 @@ on:
     branches:
       - main
 env:
-  AZURE_WEBAPP_NAME: 'dotnetcoresample-1' 
+  AZURE_RESOURCE_NAME: 'example-resources'
+  AZURE_WEBAPP_NAME: 'example-app-service-tf' 
   AZURE_WEBAPP_PACKAGE_PATH: .
   PATH_TO_SOLUTION: MySampleWebApp/MySampleWebApp.sln
   PATH_TO_PROJ: MySampleWebAppTests1/MySampleWebAppTests1.csproj
@@ -16,15 +17,7 @@ env:
 jobs:
   build:
     runs-on: ubuntu-latest
-    #permissions:
-     # actions: read
-      #contents: read
-      #security-events: write
-    #strategy:
-     # fail-fast: false
-      #matrix:
-       # language: [ 'csharp' , 'javascript']
-
+    
     steps:
     - uses: actions/checkout@v2
       with:
@@ -129,12 +122,20 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: .net-app
+        
+    - name: Get WebApp/FunctionApp publish profile
+      id: webapp
+      uses: aliencube/publish-profile-actions@v1
+      env:
+        AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
+      with:
+        resourceGroupName: ${{ env.AZURE_RESOURCE_NAME }} 
+        appName: ${{ env.AZURE_WEBAPP_NAME }}
 
     - name: Deploy to Azure Web App
       id: deploy-to-webapp
       uses: azure/webapps-deploy@v2
       with:
         app-name: ${{ env.AZURE_WEBAPP_NAME }}
-        #slot-name: 'production'
-        publish-profile: ${{ secrets.DOTNET_WEB_APP }}
+        publish-profile: ${{ steps.webapp.outputs.profile }}
         package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
