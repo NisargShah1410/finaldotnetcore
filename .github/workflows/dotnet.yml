@@ -30,14 +30,14 @@ jobs:
       with:
           fetch-depth: 0
             
-    - name: Initialize CodeQL
-      uses: github/codeql-action/init@v1
-      with:
-        languages: ${{ matrix.language }}
-        config-file: ./.github/codeql/codeql-config.yml
+    #- name: Initialize CodeQL
+     # uses: github/codeql-action/init@v1
+      #with:
+       # languages: ${{ matrix.language }}
+        #config-file: ./.github/codeql/codeql-config.yml
         
-    - name: Autobuild
-      uses: github/codeql-action/autobuild@v1
+    #- name: Autobuild
+     # uses: github/codeql-action/autobuild@v1
     
     - name: Set up .NET Core
       uses: actions/setup-dotnet@v1
@@ -75,8 +75,8 @@ jobs:
     - name: dotnet publish
       run: dotnet publish ${{ env.PATH_TO_SOLUTION }} -c Release -o ${{env.DOTNET_ROOT}}/myapp
 
-    - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@v1
+    #- name: Perform CodeQL Analysis
+     # uses: github/codeql-action/analyze@v1
       
     - name: Upload artifact for deployment job
       uses: actions/upload-artifact@v2
