@@ -1,4 +1,4 @@
-name: .Net Core App
+name: basetemplate
 on:
   push:
     branches: main
