@@ -1,4 +1,4 @@
-name: basetemplate
+name: .Net Core App
 on:
   push:
     branches: main
@@ -16,8 +16,10 @@ jobs:
     - name: Set up .NET Core
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: 3.1
+        dotnet-version: 3.1.301
         include-prerelease: true
+    - name: Build with dotnet
+      run: dotnet build ${{ env.PATH_TO_SOLUTION }} --configuration Release
     - name: Test
       run: dotnet test ${{ env.PATH_TO_PROJ }}  /p:CollectCoverage=true /p:CoverletOutput=TestResults/ /p:CoverletOutputFormat=lcov
     - name: dotnet publish
