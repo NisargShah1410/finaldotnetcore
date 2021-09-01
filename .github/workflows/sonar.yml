@@ -24,7 +24,7 @@ jobs:
     - name: Sonarqube Install
       run: dotnet tool install --global dotnet-sonarscanner
     - name: Sonarqube Begin
-      run: dotnet sonarscanner begin /d:sonar.host.url=${{ env.SONAR_URL }} /o:${{ env.SONAR_ORG }} /k:${{ env.SONAR_PROJECT }} /d:sonar.cs.vstest.reportsPaths=**/*.trx /d:sonar.cs.opencover.reportsPaths=**/coverage.opencover.xml /d:sonar.login=${{ secrets.SONAR_TOKEN }}
+      run: dotnet sonarscanner begin /d:sonar.host.url=${{ env.SONAR_URL }}  /k:${{ env.SONAR_PROJECT }} /d:sonar.cs.vstest.reportsPaths=**/*.trx /d:sonar.cs.opencover.reportsPaths=**/coverage.opencover.xml /d:sonar.login=${{ secrets.SONAR_TOKEN }}
     - name: Build with dotnet
       run: dotnet build ${{ env.PATH_TO_SOLUTION }} --configuration Release
     - name: Test
