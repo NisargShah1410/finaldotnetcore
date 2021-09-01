@@ -7,6 +7,9 @@ env:
   AZURE_WEBAPP_PACKAGE_PATH: .
   PATH_TO_SOLUTION: MySampleWebApp/MySampleWebApp.sln
   PATH_TO_PROJ: MySampleWebAppTests1/MySampleWebAppTests1.csproj
+  SONAR_URL: http://40.76.223.50:8080
+  SONAR_ORG: NisargShah1410
+  SONAR_PROJECT: sampledotnetcore
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -18,8 +21,10 @@ jobs:
       with:
         dotnet-version: 3.1.301
         include-prerelease: true
+    - name: Sonarqube Install
+      run: dotnet tool install --global dotnet-sonarscanner }}
     - name: Sonarqube Begin
-      run: dotnet sonarscanner begin /d:sonar.host.url=http://40.76.223.50:8080 /o:NisargShah1410 /k:sampledotnetcore /d:sonar.cs.vstest.reportsPaths=**/*.trx /d:sonar.cs.opencover.reportsPaths=**/coverage.opencover.xml /d:sonar.login=${{ secrets.SONAR_TOKEN }}
+      run: dotnet sonarscanner begin /d:sonar.host.url=${{ env.SONAR_URL }} /o:${{ env.SONAR_ORG }} /k:${{ env.SONAR_PROJECT }} /d:sonar.cs.vstest.reportsPaths=**/*.trx /d:sonar.cs.opencover.reportsPaths=**/coverage.opencover.xml /d:sonar.login=${{ secrets.SONAR_TOKEN }}
     - name: Build with dotnet
       run: dotnet build ${{ env.PATH_TO_SOLUTION }} --configuration Release
     - name: Test
