@@ -22,7 +22,7 @@ jobs:
         dotnet-version: 3.1.301
         include-prerelease: true
     - name: Sonarqube Install
-      run: dotnet tool install --global dotnet-sonarscanner }}
+      run: dotnet tool install --global dotnet-sonarscanner
     - name: Sonarqube Begin
       run: dotnet sonarscanner begin /d:sonar.host.url=${{ env.SONAR_URL }} /o:${{ env.SONAR_ORG }} /k:${{ env.SONAR_PROJECT }} /d:sonar.cs.vstest.reportsPaths=**/*.trx /d:sonar.cs.opencover.reportsPaths=**/coverage.opencover.xml /d:sonar.login=${{ secrets.SONAR_TOKEN }}
     - name: Build with dotnet
