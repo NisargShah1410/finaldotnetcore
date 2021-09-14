@@ -7,7 +7,7 @@ env:
   AZURE_WEBAPP_PACKAGE_PATH: .
   PATH_TO_SOLUTION: MySampleWebApp/MySampleWebApp.sln
   PATH_TO_PROJ: MySampleWebAppTests1/MySampleWebAppTests1.csproj
-  SONAR_URL: http://40.76.223.50:8080
+  SONAR_URL: http://40.121.141.180:8080
   SONAR_ORG: NisargShah1410
   SONAR_PROJECT: sampledotnetcore
 jobs:
@@ -16,6 +16,10 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
+    - name: Hello to the new js custom action
+      uses: NisargShah1410/js-custom-action@v1.2
+      with:
+        language-name: 'python'
     - name: Set up .NET Core
       uses: actions/setup-dotnet@v1
       with:
