@@ -1,7 +1,7 @@
 name: basetemplate
 on:
   push:
-    branches: main
+    branches: main1
 env:
   AZURE_WEBAPP_NAME: dotnetcoresample-1
   AZURE_WEBAPP_PACKAGE_PATH: .
