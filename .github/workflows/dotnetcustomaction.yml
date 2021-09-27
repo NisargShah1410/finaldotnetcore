@@ -23,10 +23,11 @@ jobs:
 
     - name: Startup Command
       id: hola
-      uses: nisargshah1410/jsactiondemo@v2.4
+      uses: nisargshah1410/jsactiondemo@v2.5
       with:
         language: angular 
         cov: coverlet
+        sonarqube-required: yes
     
     #- name: npm build, and test
      # run: |
