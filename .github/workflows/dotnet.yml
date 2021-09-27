@@ -5,7 +5,7 @@ name: .Net Core App
 on:
   push:
     branches:
-      - main
+      - main1
 env:
   AZURE_RESOURCE_NAME: 'example-resources'
   AZURE_WEBAPP_NAME: 'example-app-service-tf' 
