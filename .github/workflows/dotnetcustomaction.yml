@@ -1,0 +1,56 @@
+## Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
+# More GitHub Actions for Azure: https://github.com/Azure/actions
+
+name: Build and deploy Node.js app to Azure Web App
+
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Node.js version
+      uses: actions/setup-node@v1
+      with:
+        node-version: '12.x'
+
+    - name: Startup Command
+      id: hola
+      uses: nisargshah1410/jsactiondemo@v2.4
+      with:
+        language: angular 
+        cov: codecov
+    
+    #- name: npm build, and test
+     # run: |
+      #  npm install --save-dev @angular-devkit/build-angular
+       # npm install karma --save-dev
+      #  npm install codecov --save-dev
+      #  ng test
+        
+    #- name: Echo Startup Command
+    #  run: echo "${{ steps.hola.outputs.startupcmd }}"
+    
+    #- name: Code Coverage
+    #  run: echo "${{ steps.hola.outputs.coveragetest }}"
+    
+    
+   # - name: Coverage if condition
+    #  run : | 
+    #    ${{ steps.hola.outputs.coveragetest }}
+      
+    
+    
+   # - name: installing dependencies
+    #  run: |
+       # ${{ steps.hola.outputs.startupcmd }}
+        
+   
+    
