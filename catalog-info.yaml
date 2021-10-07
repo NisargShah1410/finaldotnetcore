@@ -1,0 +1,10 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: finaldotnetcore
+  annotations:
+    github.com/project-slug: NisargShah1410/finaldotnetcore
+spec:
+  type: other
+  lifecycle: unknown
+  owner: backstage
